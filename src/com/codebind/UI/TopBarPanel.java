@@ -60,7 +60,7 @@ public class TopBarPanel extends JPanel {
         int size = 3;
         String comboBoxResult = (String) fieldSizeComboBox.getSelectedItem();
         if(comboBoxResult == "Бесконечное поле") size = 24;
-        else Integer.parseInt(comboBoxResult.split("x")[0]);
+        else size = Integer.parseInt(comboBoxResult.split("x")[0]);
         int winningResult = Integer.parseInt(winnerResult.getText());
         Main.mainPanel.createNewGamePanel(size, winningResult);
     }
