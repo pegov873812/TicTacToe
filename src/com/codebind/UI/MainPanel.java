@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainPanel extends JPanel {
-    public GamePenel gamePanel;
+    public GamePanel gamePanel;
     /**
      * Конструктор - создание нового объекта
      */
@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
         if(this.gamePanel != null) {
             this.remove(Main.mainPanel.gamePanel);
         }
-        GamePenel gamePanel = new GamePenel(size);
+        GamePanel gamePanel = new GamePanel(size);
         this.gamePanel = gamePanel;
         this.add(gamePanel, BorderLayout.CENTER);
         this.revalidate();

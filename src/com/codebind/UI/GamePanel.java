@@ -10,9 +10,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
-public class GamePenel extends JPanel {
+public class GamePanel extends JPanel {
     public Game game;
-    public GamePenel(int size) {
+    public GamePanel(int size) {
         game = new Game(size,3 );
         setLayout(new java.awt.GridLayout(size, size));
         int xCounter = 0,yCounter = 0;
