@@ -7,11 +7,17 @@ import java.awt.*;
 
 public class MainPanel extends JPanel {
     public GamePanel gamePanel;
+    public TopBarPanel topBarPanel;
     /**
      * Конструктор - создание нового объекта
      */
     public MainPanel() {
+        this.setLayout(new BorderLayout());
         createNewGamePanel(3);
+        topBarPanel = new TopBarPanel("3x3");
+        this.topBarPanel = topBarPanel;
+        this.add(topBarPanel, BorderLayout.NORTH);
+
     }
     public void createNewGamePanel(int size) {
         if(this.gamePanel != null) {

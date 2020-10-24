@@ -67,14 +67,17 @@ public class Game {
                                 counter++;
                                 if(counter == winningResult) return true;
                             }
+                            else  counter = 0;
                         }
                     }
+                    counter = 1;
                     for (int z = 1; z < gameField.length; z++) {
                         if(i + z < gameField.length && j - z >= 0) {
                             if(gameField[i + z][j - z] == playerSymbol) {
                                 counter++;
                                 if(counter == winningResult) return true;
                             }
+                            else  counter = 0;
                         }
                     }
                 }
