@@ -28,14 +28,15 @@ public class GamePanel extends JPanel {
             }
             b.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    b.setText(game.getPlayerSymbol());
-                    String name = b.getName();
-                    int x = Integer.parseInt(name.split("/")[0]);
-                    int y = Integer.parseInt(name.split("/")[1]);
-                    game.updateGameField(x,y);
-                    game.CheckWinner();
-                    game.switchPlayerSymbol();
-
+                    if(game.IsGameOn()) {
+                        b.setText(game.getPlayerSymbol());
+                        String name = b.getName();
+                        int x = Integer.parseInt(name.split("/")[0]);
+                        int y = Integer.parseInt(name.split("/")[1]);
+                        game.updateGameField(x, y);
+                        game.CheckWinner();
+                        game.switchPlayerSymbol();
+                    }
                 }
             });
             add(b);
