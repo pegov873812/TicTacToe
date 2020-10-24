@@ -26,10 +26,24 @@ public class Game {
         gameField[x][y] = playerSymbol;
     }
     public  void CheckWinner() {
+        if(isDeadHead()) {
+            JOptionPane.showMessageDialog(null,"Ничья");
+            gameOn = false;
+            return;
+        }
         if(CheckWinnerHorizontal() || CheckWinnerVertical() || CheckWinnerDiagonal()) {
             JOptionPane.showMessageDialog(null,"Победил  " + playerSymbol);
             gameOn = false;
         }
+    }
+    private boolean isDeadHead() {
+        for(int i = 0; i < gameField.length; i++) {
+            for (int j = 0; j < gameField[0].length; j++) {
+                if(gameField[i][j] == null || gameField[i][j].isEmpty())
+                    return  false;
+            }
+        }
+        return  true;
     }
     private boolean CheckWinnerHorizontal(){
         int counter = 0;
