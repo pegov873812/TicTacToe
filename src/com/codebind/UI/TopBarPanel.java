@@ -47,6 +47,7 @@ public class TopBarPanel extends JPanel {
         items.add("5x5");
         items.add("7x7");
         items.add("9x9");
+        items.add("Бесконечное поле");
         fieldSizeComboBox = new JComboBox(items.toArray());
         fieldSizeComboBox.setSelectedItem(size);
         this.add(new JLabel("Размер поля:"));
@@ -56,7 +57,10 @@ public class TopBarPanel extends JPanel {
      * Функция вызывающаяся при имзменении размера игрового поля. Создает панель тренировки заново
      */
     private void startNewGame() {
-        int size = Integer.parseInt(((String) fieldSizeComboBox.getSelectedItem()).split("x")[0]);
+        int size = 3;
+        String comboBoxResult = (String) fieldSizeComboBox.getSelectedItem();
+        if(comboBoxResult == "Бесконечное поле") size = 24;
+        else Integer.parseInt(comboBoxResult.split("x")[0]);
         int winningResult = Integer.parseInt(winnerResult.getText());
         Main.mainPanel.createNewGamePanel(size, winningResult);
     }
