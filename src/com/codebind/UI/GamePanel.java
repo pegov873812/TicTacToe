@@ -12,23 +12,25 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
     public Game game;
-    public GamePanel(int size) {
-        game = new Game(size,3 );
+
+    public GamePanel(int size, int winningResult) {
+
+        game = new Game(size, winningResult);
         setLayout(new java.awt.GridLayout(size, size));
-        int xCounter = 0,yCounter = 0;
+        int xCounter = 0, yCounter = 0;
         for (int i = 1; i <= size * size; ++i) {
             JButton b = new JButton();
             b.setFont(new Font("Arial", Font.PLAIN, 50));
-            b.setPreferredSize(new Dimension(100,100));
+            b.setPreferredSize(new Dimension(100, 100));
             b.setName(yCounter + "/" + xCounter);
             xCounter++;
-            if(xCounter == size) {
+            if (xCounter == size) {
                 xCounter = 0;
                 yCounter++;
             }
             b.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if(game.IsGameOn() && b.getText().isEmpty()) {
+                    if (game.IsGameOn() && b.getText().isEmpty()) {
                         b.setText(game.getPlayerSymbol());
                         String name = b.getName();
                         int x = Integer.parseInt(name.split("/")[0]);

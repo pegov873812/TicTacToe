@@ -14,10 +14,27 @@ import java.util.ArrayList;
  */
 public class TopBarPanel extends JPanel {
     JComboBox fieldSizeComboBox;
+    JTextField winnerResult;
+    String size;
 
     public TopBarPanel(String size) {
         this.setLayout(new GridLayout());
         createFieldSizeComboBox(size);
+        this.size = size.split("x")[0];
+        createWinnerResultPanel();
+    }
+    public void createWinnerResultPanel() {
+        JPanel panel1 = new JPanel();
+        winnerResult = new JTextField(size, 10);
+        panel1.add(new JLabel("Количество выгрыщних элементов:"));
+        panel1.add(winnerResult);
+        winnerResult.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onSettigsValueChanged();
+            }
+        });
+        this.add(panel1);
     }
     /**
      * Функция создания нового комбо бокса для выбора размера игрового поля
@@ -35,15 +52,16 @@ public class TopBarPanel extends JPanel {
         fieldSizeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onComboBoxValueChanged();
+                onSettigsValueChanged();
             }
         });
     }
     /**
      * Функция вызывающаяся при имзменении размера игрового поля. Создает панель тренировки заново
      */
-    private void onComboBoxValueChanged() {
+    private void onSettigsValueChanged() {
         int size = Integer.parseInt(((String) fieldSizeComboBox.getSelectedItem()).split("x")[0]);
-        Main.mainPanel.createNewGamePanel(size);
+        int winningResult = Integer.parseInt(winnerResult.getText());
+        Main.mainPanel.createNewGamePanel(size, winningResult);
     }
 }
