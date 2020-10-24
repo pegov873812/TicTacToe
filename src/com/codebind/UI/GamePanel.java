@@ -28,7 +28,7 @@ public class GamePanel extends JPanel {
             }
             b.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if(game.IsGameOn()) {
+                    if(game.IsGameOn() && b.getText().isEmpty()) {
                         b.setText(game.getPlayerSymbol());
                         String name = b.getName();
                         int x = Integer.parseInt(name.split("/")[0]);
