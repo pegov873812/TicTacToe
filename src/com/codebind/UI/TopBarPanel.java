@@ -18,6 +18,13 @@ public class TopBarPanel extends JPanel {
     String size;
 
     public TopBarPanel(String size) {
+        JButton startGameButton = new JButton("Начать новую игру");
+        startGameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                startNewGame();
+            }
+        });
+        this.add(startGameButton);
         this.setLayout(new GridLayout());
         createFieldSizeComboBox(size);
         this.size = size.split("x")[0];
@@ -28,12 +35,6 @@ public class TopBarPanel extends JPanel {
         winnerResult = new JTextField(size, 10);
         panel1.add(new JLabel("Количество выгрыщних элементов:"));
         panel1.add(winnerResult);
-        winnerResult.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSettigsValueChanged();
-            }
-        });
         this.add(panel1);
     }
     /**
@@ -48,18 +49,13 @@ public class TopBarPanel extends JPanel {
         items.add("9x9");
         fieldSizeComboBox = new JComboBox(items.toArray());
         fieldSizeComboBox.setSelectedItem(size);
+        this.add(new JLabel("Размер поля:"));
         this.add(fieldSizeComboBox);
-        fieldSizeComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onSettigsValueChanged();
-            }
-        });
     }
     /**
      * Функция вызывающаяся при имзменении размера игрового поля. Создает панель тренировки заново
      */
-    private void onSettigsValueChanged() {
+    private void startNewGame() {
         int size = Integer.parseInt(((String) fieldSizeComboBox.getSelectedItem()).split("x")[0]);
         int winningResult = Integer.parseInt(winnerResult.getText());
         Main.mainPanel.createNewGamePanel(size, winningResult);
