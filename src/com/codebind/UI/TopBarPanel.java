@@ -24,7 +24,11 @@ public class TopBarPanel extends JPanel {
         JButton startGameButton = new JButton("Начать новую игру");
         startGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                startNewGame();
+                String[] options = {"2 игрока", "Против компьютера"};
+                int index = JOptionPane.showOptionDialog(null, "Выберите режим игры",
+                        "Режим игры",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                startNewGame(index == 1);
             }
         });
         this.add(startGameButton);
@@ -84,12 +88,12 @@ public class TopBarPanel extends JPanel {
     /**
      * Функция вызывающаяся при имзменении размера игрового поля. Создает панель тренировки заново
      */
-    private void startNewGame() {
+    private void startNewGame(boolean versusAI) {
         int size = 3;
         String comboBoxResult = (String) fieldSizeComboBox.getSelectedItem();
         if(comboBoxResult == "Бесконечное поле") size = 24;
         else size = Integer.parseInt(comboBoxResult.split("x")[0]);
         int winningResult = Integer.parseInt(winnerResult.getText());
-        Main.mainPanel.createNewGamePanel(size, winningResult);
+        Main.mainPanel.createNewGamePanel(size, winningResult, versusAI);
     }
 }

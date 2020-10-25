@@ -6,13 +6,17 @@ import java.util.ArrayList;
 public class Game {
     private String playerSymbol;
     private String[][] gameField;
-    private  Boolean gameOn;
-    int winningResult;
-    public Game(int size, int winningResult) {
+    private  boolean gameOn;
+    private int winningResult;
+    private boolean versusAI;
+    private AI ai;
+    public Game(int size, int winningResult, boolean versusAI) {
         gameOn = true;
         playerSymbol = "X";
         gameField = new String[size][size];
         this.winningResult = winningResult;
+        this.versusAI = versusAI;
+        if(versusAI) ai = new AI();
 
     }
     public void switchPlayerSymbol() {
@@ -100,8 +104,11 @@ public class Game {
         }
         return  false;
     }
-
     public boolean IsGameOn() {
         return  gameOn;
+    }
+    public boolean IsVersusAI() {return  versusAI;}
+    public String MakeAIMove() {
+        return ai.MakeMove(gameField);
     }
 }
