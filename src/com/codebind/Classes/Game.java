@@ -1,7 +1,6 @@
 package com.codebind.Classes;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
 public class Game {
     private String playerSymbol;
@@ -10,13 +9,13 @@ public class Game {
     private int winningResult;
     private boolean versusAI;
     private AI ai;
-    public Game(int size, int winningResult, boolean versusAI) {
+    public Game(int size, int winningResult, boolean versusAI, String difficulty) {
         gameOn = true;
         playerSymbol = "X";
         gameField = new String[size][size];
         this.winningResult = winningResult;
         this.versusAI = versusAI;
-        if(versusAI) ai = new AI();
+        if(versusAI) ai = new AI(difficulty);
 
     }
     public void switchPlayerSymbol() {
@@ -109,6 +108,7 @@ public class Game {
     }
     public boolean IsVersusAI() {return  versusAI;}
     public String MakeAIMove() {
-        return ai.MakeMove(gameField);
+        String humanSymbol = playerSymbol == "X" ? "O" : "X";
+        return ai.makeMove(gameField, humanSymbol, playerSymbol);
     }
 }

@@ -31,9 +31,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class GamePanel extends JPanel {
     public Game game;
 
-    public GamePanel(int size, int winningResult, boolean versusAI) {
+    public GamePanel(int size, int winningResult, boolean versusAI, String difficulty) {
 
-        game = new Game(size, winningResult, versusAI);
+        game = new Game(size, winningResult, versusAI, difficulty);
         setLayout(new java.awt.GridLayout(size, size));
         int xCounter = 0, yCounter = 0;
         for (int i = 1; i <= size * size; ++i) {

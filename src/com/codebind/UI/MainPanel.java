@@ -18,14 +18,14 @@ public class MainPanel extends JPanel {
         this.add(topBarPanel, BorderLayout.NORTH);
 
     }
-    public void createNewGamePanel(int size, int winningResult, boolean versusAI) {
+    public void createNewGamePanel(int size, int winningResult, boolean versusAI, String difficulty) {
         if (winningResult > size) {
             JOptionPane.showMessageDialog(null, "Количество выгрышных элеменов не может быть больше размера поля");
         } else {
             if (this.gamePanel != null) {
                 this.remove(Main.mainPanel.gamePanel);
             }
-            GamePanel gamePanel = new GamePanel(size, winningResult, versusAI);
+            GamePanel gamePanel = new GamePanel(size, winningResult, versusAI, difficulty);
             this.gamePanel = gamePanel;
             this.add(gamePanel, BorderLayout.CENTER);
             this.revalidate();
