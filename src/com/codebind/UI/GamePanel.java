@@ -48,34 +48,31 @@ public class GamePanel extends JPanel {
             }
             b.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    try {
-                        ((GamePanel) b.getParent()).a(b);
+                    if (game.IsGameOn() && b.getText().isEmpty()) {
                     }
-                    catch (Exception exception) {
+                    try {
+                        BufferedImage master;
+                        if (game.getPlayerSymbol() == "O")
+                            master = ImageIO.read(new File("circle.png"));
+                        else {
+                            master = ImageIO.read(new File("cross.png"));
+                        }
+                        Image scaled = master.getScaledInstance(b.getSize().height, b.getSize().height, java.awt.Image.SCALE_SMOOTH);
+                        b.setIcon(new ImageIcon(scaled));
 
                     }
+                    catch (Exception exception) {
+                        b.setText(game.getPlayerSymbol());
+                    }
+                    String name = b.getName();
+                    int x = Integer.parseInt(name.split("/")[0]);
+                    int y = Integer.parseInt(name.split("/")[1]);
+                    game.updateGameField(x, y);
+                    game.CheckWinner();
+                    game.switchPlayerSymbol();
                 }
             });
             add(b);
         }
-    }
-        public void a(JButton b) throws Exception{
-            if (game.IsGameOn() && b.getText().isEmpty()) {
-                BufferedImage master;
-                if (game.getPlayerSymbol() == "O")
-                    master = ImageIO.read(new File("circle.png"));
-                else {
-                    master = ImageIO.read(new File("cross.png"));
-                }
-                Image scaled = master.getScaledInstance(b.getSize().height, b.getSize().height, java.awt.Image.SCALE_SMOOTH);
-                b.setIcon(new ImageIcon(scaled));
-                String name = b.getName();
-                int x = Integer.parseInt(name.split("/")[0]);
-                int y = Integer.parseInt(name.split("/")[1]);
-                game.updateGameField(x, y);
-                game.CheckWinner();
-                game.switchPlayerSymbol();
-            }
-
     }
 }
