@@ -11,17 +11,23 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 /**
- * Класс вывода верхней панели с инструментами со свойствами <b>currentSymbolText</b>, <b>stopWatchPane</b>, <b>fieldSizeComboBox</b>, <b>symbolTypeComboBox</b>
- * @autor Цветкова
+ * Класс вывода верхней панели с инструментами со свойствами <b>fieldSizeComboBox</b>, <b>winnerResult</b>, <b>size</b>
+ * @autor Пегов
  * @version 1.0
  */
 public class TopBarPanel extends JPanel {
+    /** Поле содержащее комбобокс для выбора размера поля */
     JComboBox fieldSizeComboBox;
+    /** Поле содержащее поле ввода количество выгрышних элементов */
     JTextField winnerResult;
+    /** Поле содержащее размер игрового поля */
     String size;
-
+    /**
+     * Конструктор - создание нового объекта с определенными значениями
+     * @param size - размер игрового поля
+     */
     public TopBarPanel(String size) {
-        this.setLayout(new GridLayout());
+
         JButton startGameButton = new JButton("Начать новую игру");
         startGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -70,6 +76,9 @@ public class TopBarPanel extends JPanel {
         });
         this.add(b);
     }
+    /**
+     * Функция создающая поле воода для количества выгрышних результатов
+     */
     public void createWinnerResultPanel() {
         JPanel panel1 = new JPanel();
         winnerResult = new JTextField(size, 10);
@@ -94,7 +103,7 @@ public class TopBarPanel extends JPanel {
         this.add(fieldSizeComboBox);
     }
     /**
-     * Функция вызывающаяся при имзменении размера игрового поля. Создает панель тренировки заново
+     * Функция начинающее новую игру
      */
     private void startNewGame(boolean versusAI, String difficulty) {
         int size = 3;
@@ -102,6 +111,6 @@ public class TopBarPanel extends JPanel {
         if(comboBoxResult == "Бесконечное поле") size = 24;
         else size = Integer.parseInt(comboBoxResult.split("x")[0]);
         int winningResult = Integer.parseInt(winnerResult.getText());
-        Main.mainPanel.createNewGamePanel(size, winningResult, versusAI, difficulty);
+        Main.mainPanel.createNewGamePanel(size, winningResult, versusAI, difficulty, null);
     }
 }

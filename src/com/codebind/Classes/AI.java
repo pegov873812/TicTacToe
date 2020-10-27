@@ -2,16 +2,27 @@ package com.codebind.Classes;
 
 import java.util.Random;
 /**
- * 
- * @autor Игнатович
+ * Класс искусственного интеллекта для совршения ходов компьютера <b>difficulty</b> .
+ * @autor Пегов
  * @version 1.0
  */
 public class AI {
+    /** Поле сложности искусственного интеллекта */
     private String difficulty;
+    /**
+     * Конструктор - создание нового объекта с определенными значениями
+     * @param difficulty - сложность искусственного интеллекта
+     */
     public AI(String difficulty){
         this.difficulty = difficulty;
     }
-
+    /**
+     * Функция совершающая ход  компьютера
+     * @param gameField игровое поле
+     * @param playerSymbol символ которым ходит человек
+     * @param aiSymbol символ которым ходит компьютер
+     * @return возвращает номер клетки в которой совершен ход
+     */
     public String makeMove(String[][] gameField, String playerSymbol, String aiSymbol) {
         switch (difficulty) {
             case "Новичок":
@@ -24,9 +35,21 @@ public class AI {
                 return makeEasyMove(gameField);
         }
     }
+    /**
+     * Функция совершающая ход  компьютера со сложностью "Новичок"
+     * @param gameField игровое поле
+     * @return возвращает номер клетки в которой совершен ход
+     */
     public String makeEasyMove(String[][] gameField) {
         return  makeRandomMove(gameField);
     }
+    /**
+     * Функция совершающая ход  компьютера со сложностью "Опытный"
+     * @param gameField игровое поле
+     * @param playerSymbol символ которым ходит человек
+     * @param aiSymbol символ которым ходит компьютер
+     * @return возвращает номер клетки в которой совершен ход
+     */
     public String makeMediumMove(String[][] gameField, String playerSymbol, String aiSymbol) {
         Random r = new Random();
         int randVal = r.nextInt((1000));
@@ -37,10 +60,21 @@ public class AI {
             return makeAlgoritmMove(gameField, playerSymbol, aiSymbol);
         }
     }
+    /**
+     * Функция совершающая ход  компьютера со сложностью "Профессионал"
+     * @param gameField игровое поле
+     * @param playerSymbol символ которым ходит человек
+     * @param aiSymbol символ которым ходит компьютер
+     * @return возвращает номер клетки в которой совершен ход
+     */
     public String makeHardMove(String[][] gameField, String playerSymbol, String aiSymbol) {
         return makeAlgoritmMove(gameField, playerSymbol, aiSymbol);
     }
-
+    /**
+     * Функция совершающая ход  в случайную клетку
+     * @param gameField игровое поле
+     * @return возвращает номер клетки в которой совершен ход
+     */
     public String  makeRandomMove(String[][] gameField) {
         Random r = new Random();
         String result;
@@ -54,8 +88,14 @@ public class AI {
         }
         return  result;
     }
-
-    public String  makeAlgoritmMove(String[][] gameField, String playerSymbol, String aiSymbol) {
+    /**
+     * Функция совершающая ход  компьютера на основе алгоритма
+     * @param gameField игровое поле
+     * @param playerSymbol символ которым ходит человек
+     * @param aiSymbol символ которым ходит компьютер
+     * @return возвращает номер клетки в которой совершен ход
+     */
+    public String makeAlgoritmMove(String[][] gameField, String playerSymbol, String aiSymbol) {
         boolean mademove = false;
         for (int i = 0; i < gameField.length; i++) {
             for (int j = 0; j < gameField[0].length; j++) {
@@ -213,4 +253,9 @@ public class AI {
         }
         return  null;
     }
+    /**
+     * Функция сложность искусственного интеллекта
+     * @return возвращает номер клетки в которой совершен ход
+     */
+    public String getDifficulty() {return  difficulty;}
 }

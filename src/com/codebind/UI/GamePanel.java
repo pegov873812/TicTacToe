@@ -27,19 +27,44 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
+/**
+ * Класс панели в которой выводятся игровые кнопки с полями  <b>game</b> .
+ * @autor Пегов
+ * @version 1.0
+ */
 public class GamePanel extends JPanel {
+    /** Поле в котрой содержится класс управляющий игрой */
     public Game game;
-
-    public GamePanel(int size, int winningResult, boolean versusAI, String difficulty) {
-
-        game = new Game(size, winningResult, versusAI, difficulty);
+    /**
+     * Конструктор - создание нового объекта с определенными значениями
+     * @param size - размер игрового поля
+     * @param winningResult - количество выгрышных элементов
+     * @param versusAI - поле показывающее, что игра ведется против искусственного ителекта
+     * @param difficulty - сложность искусственного интеллекта
+     * @param oldGameField - старое состояние игрового поля
+     */
+    public GamePanel(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGameField) {
+        setSize(100 * size,100 * size);
+        setPreferredSize(new Dimension(100 * size,100 * size));
+        setMaximumSize(new Dimension(100 * size,100 * size));
+        setMaximumSize(new Dimension(100 * size,100 * size));
+        game = new Game(size, winningResult, versusAI, difficulty, oldGameField);
         setLayout(new java.awt.GridLayout(size, size));
         int xCounter = 0, yCounter = 0;
         for (int i = 1; i <= size * size; ++i) {
             JButton b = new JButton();
             b.setFont(new Font("Arial", Font.PLAIN, 50));
             b.setPreferredSize(new Dimension(100, 100));
+            b.setSize(new Dimension(100, 100));
+            b.setMaximumSize(new Dimension(100, 100));
+            b.setMinimumSize(new Dimension(100, 100));
+
+            if(oldGameField != null) {
+                if(oldGameField.length > xCounter && oldGameField[0].length > yCounter){
+                    b.setText(oldGameField[yCounter][xCounter]);
+                }
+            }
+
             b.setName(yCounter + "/" + xCounter);
             xCounter++;
             if (xCounter == size) {
@@ -63,6 +88,10 @@ public class GamePanel extends JPanel {
             add(b);
         }
     }
+    /**
+     * Функция визуально отобраражающая ход
+     * @param b кнопка в которую сделан ход
+     */
     void makeMove(JButton b) {
         try {
             BufferedImage master;
@@ -82,7 +111,7 @@ public class GamePanel extends JPanel {
         int x = Integer.parseInt(name.split("/")[0]);
         int y = Integer.parseInt(name.split("/")[1]);
         game.updateGameField(x, y);
-        game.CheckWinner();
+        game.сheckEndGame();
         game.switchPlayerSymbol();
     }
 }
