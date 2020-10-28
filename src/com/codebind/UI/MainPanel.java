@@ -10,7 +10,6 @@ import java.awt.*;
  * @version 1.0
  */
 public class MainPanel extends JPanel {
-    public JPanel GamePanelContainer;
     /** Поле содержащее игровую панель */
     public GamePanel gamePanel;
     /** Поле содержащее панель с кнпками интерфейса */
@@ -33,23 +32,26 @@ public class MainPanel extends JPanel {
      * @param difficulty сложность искусственного интеллекта
      * @param oldGameField предыдущее состояние игрового поля
      */
-    public void createNewGamePanel(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGameField) {
+    public void createNewGamePanel(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGameField, String oldPlayerSymbol) {
+        if(size < 2 ) {
+            JOptionPane.showMessageDialog(null, "Размер поля должен быть больше 2");
+        }
         if (winningResult > size) {
             JOptionPane.showMessageDialog(null, "Количество выгрышных элеменов не может быть больше размера поля");
+        } else  if (winningResult < 3) {
+            JOptionPane.showMessageDialog(null, "Количество выгрышных элеменов должно быть больше 2");
         } else {
-            if (this.GamePanelContainer != null && this.gamePanel != null) {
-                this.remove(Main.mainPanel.GamePanelContainer);
+            if (this.gamePanel != null) {
+                this.remove(Main.mainPanel.gamePanel);
             }
-            GamePanelContainer = new JPanel();
-            ScrollPane scrollPane = new ScrollPane();
-            GamePanel gamePanel = new GamePanel(size, winningResult, versusAI, difficulty, oldGameField);
-            scrollPane.add(gamePanel);
-            scrollPane.setSize(Main.mainPanel.getSize());
-            GamePanelContainer.add(scrollPane);
+            GamePanel gamePanel = new GamePanel(size, winningResult, versusAI, difficulty, oldGameField, oldPlayerSymbol);
             this.gamePanel = gamePanel;
-            this.add(GamePanelContainer, BorderLayout.CENTER);
+            this.add(gamePanel, BorderLayout.CENTER);
             this.revalidate();
             this.repaint();
+            topBarPanel.winnerResult.setEnabled(false);
+            topBarPanel.fieldSize.setEnabled(false);
+            topBarPanel.endlessFieldCheckBox.setEnabled(false);
         }
     }
 }

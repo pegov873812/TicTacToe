@@ -1,7 +1,6 @@
 package com.codebind.Classes;
 
 import com.codebind.Main;
-
 import javax.swing.*;
 /**
  * Класс управления игрой с полями <b>playerSymbol</b>, <b>gameField</b>,<b>gameOn</b>,<b>winningResult</b>,<b>versusAI</b>,<b>ai</b>.
@@ -28,12 +27,12 @@ public class Game {
      * @param versusAI - поле показывающее, что игра идет против искусственного интеллекта
      * @param difficulty - сложность искусственного интеллекта
      */
-    public Game(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGamePanel) {
+    public Game(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGamePanel, String oldPlayeSymbol) {
         gameOn = true;
-        playerSymbol = "X";
+        playerSymbol = oldPlayeSymbol == null ?  "X" : oldPlayeSymbol;
         gameField = new String[size][size];
         if(oldGamePanel != null) {
-            playerSymbol = "O";
+            //playerSymbol = "O";
             for(int i = 0; i < oldGamePanel.length; i++) {
                 for(int j = 0; j < oldGamePanel[0].length; j++) {
                     gameField[i][j] = oldGamePanel[i][j];
@@ -71,16 +70,23 @@ public class Game {
         if(checkWinnerHorizontal() || сheckWinnerVertical() || сheckWinnerDiagonal()) {
             JOptionPane.showMessageDialog(null,"Победил  " + playerSymbol);
             gameOn = false;
+            Main.mainPanel.topBarPanel.winnerResult.setEnabled(true);
+            Main.mainPanel.topBarPanel.fieldSize.setEnabled(true);
+            Main.mainPanel.topBarPanel.endlessFieldCheckBox.setEnabled(true);
             return;
         }
         if(isDeadHead()) {
             JOptionPane.showMessageDialog(null,"Ничья");
-            String difficulty = "";
+            gameOn = false;
+            Main.mainPanel.topBarPanel.winnerResult.setEnabled(true);
+            Main.mainPanel.topBarPanel.fieldSize.setEnabled(true);
+            Main.mainPanel.topBarPanel.endlessFieldCheckBox.setEnabled(true);
+            /*String difficulty = "";
             if(ai != null) difficulty = ai.getDifficulty();
             gameOn = false;
             if(gameField.length > 9) {
                 Main.mainPanel.createNewGamePanel(gameField.length + 1, winningResult, versusAI, difficulty, gameField);
-            }
+            }*/
         }
     }
     /**
@@ -167,20 +173,31 @@ public class Game {
      * Функция возвращает статус игры
      * @return возвращает статус игры
      */
-    public boolean IsGameOn() {
+    public boolean isGameOn() {
         return  gameOn;
     }
     /**
      * Функция возвращает ведется ли игра против искусственного интеллекта
      * @return возвращает ведется ли игра против искусственного интеллекта
      */
-    public boolean IsVersusAI() {return  versusAI;}
+    public boolean isVersusAI() {return  versusAI;}
     /**
      * Функция делает ход искусственного интеллекта
      * @return возвращает ячейку в которую в которую походил искусственный интеллект
      */
-    public String MakeAIMove() {
+    public String makeAIMove() {
         String humanSymbol = playerSymbol == "X" ? "O" : "X";
         return ai.makeMove(gameField, humanSymbol, playerSymbol);
+    }
+    public String getDifficulty() {
+        if(ai != null)
+            return  ai.getDifficulty();
+        return null;
+    }
+    public String[][] getGameField() {
+        return  gameField;
+    }
+    public int getWinningResult() {
+        return winningResult;
     }
 }

@@ -4,9 +4,6 @@ import com.codebind.Main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,11 +14,14 @@ import java.util.ArrayList;
  */
 public class TopBarPanel extends JPanel {
     /** Поле содержащее комбобокс для выбора размера поля */
-    JComboBox fieldSizeComboBox;
+    public JTextField fieldSize;
     /** Поле содержащее поле ввода количество выгрышних элементов */
-    JTextField winnerResult;
+    public JTextField winnerResult;
     /** Поле содержащее размер игрового поля */
     String size;
+    /** Поле содержащее выбо режима бесконечного поля */
+    public JCheckBox endlessFieldCheckBox;
+
     /**
      * Конструктор - создание нового объекта с определенными значениями
      * @param size - размер игрового поля
@@ -47,9 +47,10 @@ public class TopBarPanel extends JPanel {
             }
         });
         this.add(startGameButton);
-        createFieldSizeComboBox(size);
+        createFieldSizeTextBox(size);
         this.size = size.split("x")[0];
         createWinnerResultPanel();
+        createEndlessFieldCheckBox();
         JButton b = new JButton("Загрузить изображение");
         b.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -81,36 +82,41 @@ public class TopBarPanel extends JPanel {
      */
     public void createWinnerResultPanel() {
         JPanel panel1 = new JPanel();
-        winnerResult = new JTextField(size, 10);
+        winnerResult = new JTextField(size, 5);
         panel1.add(new JLabel("Количество выгрыщних элементов:"));
         panel1.add(winnerResult);
+        this.add(panel1);
+    }
+    public void createEndlessFieldCheckBox() {
+        JPanel panel1 = new JPanel();
+        endlessFieldCheckBox = new JCheckBox();
+        panel1.add(new JLabel("Бесконечное поле"));
+        panel1.add(endlessFieldCheckBox);
         this.add(panel1);
     }
     /**
      * Функция создания нового комбо бокса для выбора размера игрового поля
      * @param size размер, который будет выбран по умолчанию
      */
-    void createFieldSizeComboBox(String size) {
+    void createFieldSizeTextBox(String size) {
         ArrayList<String> items = new ArrayList<String>();
-        items.add("3x3");
-        items.add("5x5");
-        items.add("7x7");
-        items.add("9x9");
-        items.add("Бесконечное поле");
-        fieldSizeComboBox = new JComboBox(items.toArray());
-        fieldSizeComboBox.setSelectedItem(size);
-        this.add(new JLabel("Размер поля:"));
-        this.add(fieldSizeComboBox);
+        fieldSize = new JTextField("3", 5);
+        JPanel panel1 = new JPanel();
+        panel1.add(new JLabel("Размер поля:"));
+        panel1.add(fieldSize);
+        this.add(panel1);
     }
     /**
      * Функция начинающее новую игру
      */
     private void startNewGame(boolean versusAI, String difficulty) {
-        int size = 3;
-        String comboBoxResult = (String) fieldSizeComboBox.getSelectedItem();
-        if(comboBoxResult == "Бесконечное поле") size = 24;
-        else size = Integer.parseInt(comboBoxResult.split("x")[0]);
-        int winningResult = Integer.parseInt(winnerResult.getText());
-        Main.mainPanel.createNewGamePanel(size, winningResult, versusAI, difficulty, null);
+        try {
+            int size = Integer.parseInt(fieldSize.getText());
+            int winningResult = Integer.parseInt(winnerResult.getText());
+            Main.mainPanel.createNewGamePanel(size, winningResult, versusAI, difficulty, null, null);
+        }
+        catch (Exception exception) {
+            JOptionPane.showMessageDialog(null, "Количество выгрышных элеменов и размер поля должны быть числом");
+        }
     }
 }

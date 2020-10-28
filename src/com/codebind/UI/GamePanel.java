@@ -4,29 +4,16 @@ import com.codebind.Classes.Game;
 import com.codebind.Main;
 
 import javax.swing.*;
-import javax.xml.transform.Result;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.File;
-import java.util.ArrayList;
 
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.Insets;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  * Класс панели в которой выводятся игровые кнопки с полями  <b>game</b> .
  * @autor Пегов
@@ -43,25 +30,17 @@ public class GamePanel extends JPanel {
      * @param difficulty - сложность искусственного интеллекта
      * @param oldGameField - старое состояние игрового поля
      */
-    public GamePanel(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGameField) {
-        setSize(100 * size,100 * size);
-        setPreferredSize(new Dimension(100 * size,100 * size));
-        setMaximumSize(new Dimension(100 * size,100 * size));
-        setMaximumSize(new Dimension(100 * size,100 * size));
-        game = new Game(size, winningResult, versusAI, difficulty, oldGameField);
+    public GamePanel(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGameField, String oldGameSymbol) {
+        game = new Game(size, winningResult, versusAI, difficulty, oldGameField, oldGameSymbol);
         setLayout(new java.awt.GridLayout(size, size));
         int xCounter = 0, yCounter = 0;
         for (int i = 1; i <= size * size; ++i) {
             JButton b = new JButton();
             b.setFont(new Font("Arial", Font.PLAIN, 50));
-            b.setPreferredSize(new Dimension(100, 100));
-            b.setSize(new Dimension(100, 100));
-            b.setMaximumSize(new Dimension(100, 100));
-            b.setMinimumSize(new Dimension(100, 100));
 
             if(oldGameField != null) {
-                if(oldGameField.length > xCounter && oldGameField[0].length > yCounter){
-                    b.setText(oldGameField[yCounter][xCounter]);
+                if(oldGameField.length > xCounter && oldGameField[0].length > yCounter && oldGameField[yCounter][xCounter] != null){
+                    setButtonIcon(b, oldGameField[yCounter][xCounter]);
                 }
             }
 
@@ -73,11 +52,11 @@ public class GamePanel extends JPanel {
             }
             b.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (game.IsGameOn() && b.getIcon() == null) {
+                    if (game.isGameOn() && b.getIcon() == null) {
                         makeMove(b);
                     }
-                    if(game.IsVersusAI() && game.IsGameOn()) {
-                        String name = game.MakeAIMove();
+                    if(game.isVersusAI() && game.isGameOn()) {
+                        String name = game.makeAIMove();
                         var buttons = b.getParent().getComponents();
                         for(int i = 0; i < buttons.length; i++) {
                             if(buttons[i].getName().equals(name)) makeMove((JButton) buttons[i]);
@@ -93,25 +72,32 @@ public class GamePanel extends JPanel {
      * @param b кнопка в которую сделан ход
      */
     void makeMove(JButton b) {
-        try {
-            BufferedImage master;
-            if (game.getPlayerSymbol() == "O")
-                master = ImageIO.read(new File("circle.png"));
-            else {
-                master = ImageIO.read(new File("cross.png"));
-            }
-            Image scaled = master.getScaledInstance(b.getSize().height, b.getSize().height, java.awt.Image.SCALE_SMOOTH);
-            b.setIcon(new ImageIcon(scaled));
-
-        }
-        catch (Exception exception) {
-            b.setText(game.getPlayerSymbol());
-        }
+        setButtonIcon(b, game.getPlayerSymbol());
         String name = b.getName();
         int x = Integer.parseInt(name.split("/")[0]);
         int y = Integer.parseInt(name.split("/")[1]);
         game.updateGameField(x, y);
         game.сheckEndGame();
         game.switchPlayerSymbol();
+        String[][] oldGameField = game.getGameField();
+        if(Main.mainPanel.topBarPanel.endlessFieldCheckBox.isSelected() && (oldGameField.length - 1 == x || oldGameField[0].length - 1 == y))
+            Main.mainPanel.createNewGamePanel(oldGameField.length + 1, game.getWinningResult(), game.isVersusAI(), game.getDifficulty(), oldGameField, game.getPlayerSymbol());
+    }
+    void setButtonIcon(JButton b, String sybmol) {
+        try {
+            BufferedImage master;
+            if (sybmol.equals("O"))
+                master = ImageIO.read(new File("circle.png"));
+            else {
+                master = ImageIO.read(new File("cross.png"));
+            }
+            int height = b.getSize() == null || b.getSize().height == 0 ? (Main.mainPanel.getHeight() - 40) / game.getGameField().length : b.getSize().height;
+            Image scaled = master.getScaledInstance(height, height, java.awt.Image.SCALE_SMOOTH);
+            b.setIcon(new ImageIcon(scaled));
+
+        }
+        catch (Exception exception) {
+            b.setText(game.getPlayerSymbol());
+        }
     }
 }
