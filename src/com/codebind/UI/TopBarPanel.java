@@ -88,31 +88,6 @@ public class TopBarPanel extends JPanel {
         this.size = size.split("x")[0];
         createWinnerResultPanel();
         createEndlessFieldCheckBox();
-        JButton b = new JButton("Загрузить изображение");
-        b.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                String[] options = {"Крестик", "Нолик"};
-                int index = JOptionPane.showOptionDialog(null, "Какое изображение вы хотите загрузить",
-                        "Загрузка изображения",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-                String fileName = index == 0 ? "cross.png" : "circle.png";
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                int result = fileChooser.showOpenDialog(b.getParent());
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    try {
-                        BufferedImage bi = ImageIO.read(selectedFile);
-                        File outputfile = new File(fileName);
-                        ImageIO.write(bi, "png", outputfile);
-                    }
-                    catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null,"Ошибка при загрузке изображения");
-                    }
-                }
-            }
-        });
-        this.add(b);
     }
     /**
      * Функция создающая поле воода для количества выгрышних результатов
