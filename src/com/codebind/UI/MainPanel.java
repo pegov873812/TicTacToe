@@ -52,6 +52,7 @@ public class MainPanel extends JPanel {
             topBarPanel.winnerResult.setEnabled(false);
             topBarPanel.fieldSize.setEnabled(false);
             topBarPanel.endlessFieldCheckBox.setEnabled(false);
+            topBarPanel.saveGameButton.setEnabled(true);
         }
     }
 }

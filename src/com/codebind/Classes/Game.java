@@ -26,6 +26,7 @@ public class Game {
      * @param winningResult - количество выгрышных результатов
      * @param versusAI - поле показывающее, что игра идет против искусственного интеллекта
      * @param difficulty - сложность искусственного интеллекта
+     * @param oldPlayeSymbol - символ предыдущего игрока
      */
     public Game(int size, int winningResult, boolean versusAI, String difficulty, String[][] oldGamePanel, String oldPlayeSymbol) {
         gameOn = true;
@@ -47,7 +48,7 @@ public class Game {
      * Функция переключающая игроков
      */
     public void switchPlayerSymbol() {
-        if(playerSymbol == "X") playerSymbol = "O";
+        if(playerSymbol.equals("X")) playerSymbol = "O";
         else playerSymbol = "X";
     }
     /**
@@ -73,6 +74,7 @@ public class Game {
             Main.mainPanel.topBarPanel.winnerResult.setEnabled(true);
             Main.mainPanel.topBarPanel.fieldSize.setEnabled(true);
             Main.mainPanel.topBarPanel.endlessFieldCheckBox.setEnabled(true);
+            Main.mainPanel.topBarPanel.saveGameButton.setEnabled(false);
             return;
         }
         if(isDeadHead()) {
@@ -81,12 +83,7 @@ public class Game {
             Main.mainPanel.topBarPanel.winnerResult.setEnabled(true);
             Main.mainPanel.topBarPanel.fieldSize.setEnabled(true);
             Main.mainPanel.topBarPanel.endlessFieldCheckBox.setEnabled(true);
-            /*String difficulty = "";
-            if(ai != null) difficulty = ai.getDifficulty();
-            gameOn = false;
-            if(gameField.length > 9) {
-                Main.mainPanel.createNewGamePanel(gameField.length + 1, winningResult, versusAI, difficulty, gameField);
-            }*/
+            Main.mainPanel.topBarPanel.saveGameButton.setEnabled(false);
         }
     }
     /**
@@ -186,18 +183,50 @@ public class Game {
      * @return возвращает ячейку в которую в которую походил искусственный интеллект
      */
     public String makeAIMove() {
-        String humanSymbol = playerSymbol == "X" ? "O" : "X";
+        String humanSymbol = playerSymbol.equals("X") ? "O" : "X";
         return ai.makeMove(gameField, humanSymbol, playerSymbol);
     }
+    /**
+     * Функция возвращает сложность искусственного инелекта
+     * @return возвращает сложность искусственного инелекта
+     */
     public String getDifficulty() {
         if(ai != null)
             return  ai.getDifficulty();
         return null;
     }
+    /**
+     * Функция возвращает игровое поле
+     * @return возвращает игровое поле
+     */
     public String[][] getGameField() {
         return  gameField;
     }
+    /**
+     * Функция возвращает количество выгрышных решений
+     * @return возвращает количество выгрышных решений
+     */
     public int getWinningResult() {
         return winningResult;
     }
+    /**
+     * Функция возвращает преобразованный в строку экземплр класса
+     * @return возвращает преобразованный в строку экземплр класса
+     */
+    public String toString(){
+        String result = gameField.length + "|" + playerSymbol + "|" + winningResult + "|" + versusAI + "|";
+        if(versusAI) {
+            result += ai.getDifficulty();
+        }
+        else  {
+            result += "false";
+        }
+        for(int i = 0; i < gameField.length; i++) {
+            for(int j = 0; j < gameField.length; j++) {
+                result += "|" + gameField[i][j];
+            }
+        }
+        return result;
+    }
+
 }

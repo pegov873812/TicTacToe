@@ -38,13 +38,13 @@ public class GamePanel extends JPanel {
             JButton b = new JButton();
             b.setFont(new Font("Arial", Font.PLAIN, 50));
 
-            if(oldGameField != null) {
-                if(oldGameField.length > xCounter && oldGameField[0].length > yCounter && oldGameField[yCounter][xCounter] != null){
-                    setButtonIcon(b, oldGameField[yCounter][xCounter]);
+            if(oldGameField != null ) {
+                if(oldGameField.length > xCounter && oldGameField[0].length > yCounter && oldGameField[xCounter][yCounter] != null){
+                    setButtonIcon(b, oldGameField[xCounter][yCounter]);
                 }
             }
 
-            b.setName(yCounter + "/" + xCounter);
+            b.setName(xCounter + "/" + yCounter);
             xCounter++;
             if (xCounter == size) {
                 xCounter = 0;
@@ -83,6 +83,9 @@ public class GamePanel extends JPanel {
         if(Main.mainPanel.topBarPanel.endlessFieldCheckBox.isSelected() && (oldGameField.length - 1 == x || oldGameField[0].length - 1 == y))
             Main.mainPanel.createNewGamePanel(oldGameField.length + 1, game.getWinningResult(), game.isVersusAI(), game.getDifficulty(), oldGameField, game.getPlayerSymbol());
     }
+    /**
+     * Функция устанавливает иконку у кнопки в завистимости от символа
+     */
     void setButtonIcon(JButton b, String sybmol) {
         try {
             BufferedImage master;

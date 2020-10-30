@@ -1,5 +1,6 @@
 package com.codebind.UI;
 
+import com.codebind.Classes.FileHelper;
 import com.codebind.Main;
 
 import javax.imageio.ImageIO;
@@ -21,7 +22,7 @@ public class TopBarPanel extends JPanel {
     String size;
     /** Поле содержащее выбо режима бесконечного поля */
     public JCheckBox endlessFieldCheckBox;
-
+    public JButton saveGameButton;
     /**
      * Конструктор - создание нового объекта с определенными значениями
      * @param size - размер игрового поля
@@ -46,6 +47,42 @@ public class TopBarPanel extends JPanel {
                 startNewGame(index == 1, difficulty);
             }
         });
+        saveGameButton = new JButton("Сохранить игру");
+        saveGameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                FileHelper.saveGameToFile(Main.mainPanel.gamePanel.game.toString());
+            }
+        });
+        saveGameButton.setEnabled(false);
+        this.add(saveGameButton);
+        JButton loadGameButton = new JButton("Загрузить игру");
+        loadGameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                String saveResult = FileHelper.loadGameFromFile();
+                var arr = saveResult.split("\\|");
+                int saveSize = Integer.parseInt(arr[0]);
+                int saveWinningResult = Integer.parseInt(arr[2]);
+                String oldPlayerSymbol = arr[1].equals("X") ? "X" : "O";
+                boolean saveVersusAI = Boolean.parseBoolean(arr[3]);
+                String saveDifficulty = arr[4];
+                String[][] gameField = new String[saveSize][saveSize];
+                int xCounter = 0, yCounter = 0;
+                for (int i = 5; i < arr.length; i++) {
+                    if(arr[i].equals("null")) {
+                        gameField[yCounter][xCounter] = null;
+                    }else {
+                        gameField[yCounter][xCounter] = arr[i].equals("X") ? "X" : "O";
+                    }
+                    xCounter++;
+                    if(xCounter == saveSize) {
+                        yCounter++;
+                        xCounter = 0;
+                    }
+                }
+                Main.mainPanel.createNewGamePanel(saveSize, saveWinningResult, saveVersusAI, saveDifficulty, gameField, oldPlayerSymbol);
+            }
+        });
+        this.add(loadGameButton);
         this.add(startGameButton);
         createFieldSizeTextBox(size);
         this.size = size.split("x")[0];
@@ -87,6 +124,9 @@ public class TopBarPanel extends JPanel {
         panel1.add(winnerResult);
         this.add(panel1);
     }
+    /**
+     * Функция создающая чекбокс бесконечного поля
+     */
     public void createEndlessFieldCheckBox() {
         JPanel panel1 = new JPanel();
         endlessFieldCheckBox = new JCheckBox();
