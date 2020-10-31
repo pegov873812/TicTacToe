@@ -50,7 +50,14 @@ public class TopBarPanel extends JPanel {
         saveGameButton = new JButton("Сохранить игру");
         saveGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                FileHelper.saveGameToFile(Main.mainPanel.gamePanel.game.toString());
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                int result = fileChooser.showOpenDialog(saveGameButton.getParent());
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    FileHelper.saveGameToFile(Main.mainPanel.gamePanel.game.toString(), selectedFile.toString());
+                }
+
             }
         });
         saveGameButton.setEnabled(false);
@@ -58,30 +65,36 @@ public class TopBarPanel extends JPanel {
         JButton loadGameButton = new JButton("Загрузить игру");
         loadGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                String saveResult = FileHelper.loadGameFromFile();
-                var arr = saveResult.split("\\|");
-                boolean endlessGame = Boolean.parseBoolean(arr[0]);
-                Main.mainPanel.topBarPanel.endlessFieldCheckBox.setSelected(endlessGame);
-                int saveSize = Integer.parseInt(arr[1]);
-                int saveWinningResult = Integer.parseInt(arr[3]);
-                String oldPlayerSymbol = arr[2].equals("X") ? "X" : "O";
-                boolean saveVersusAI = Boolean.parseBoolean(arr[4]);
-                String saveDifficulty = arr[5];
-                String[][] gameField = new String[saveSize][saveSize];
-                int xCounter = 0, yCounter = 0;
-                for (int i = 6; i < arr.length; i++) {
-                    if(arr[i].equals("null")) {
-                        gameField[yCounter][xCounter] = null;
-                    }else {
-                        gameField[yCounter][xCounter] = arr[i].equals("X") ? "X" : "O";
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                int result = fileChooser.showOpenDialog(saveGameButton.getParent());
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String saveResult = FileHelper.loadGameFromFile(selectedFile.toString());
+                    var arr = saveResult.split("\\|");
+                    boolean endlessGame = Boolean.parseBoolean(arr[0]);
+                    Main.mainPanel.topBarPanel.endlessFieldCheckBox.setSelected(endlessGame);
+                    int saveSize = Integer.parseInt(arr[1]);
+                    int saveWinningResult = Integer.parseInt(arr[3]);
+                    String oldPlayerSymbol = arr[2].equals("X") ? "X" : "O";
+                    boolean saveVersusAI = Boolean.parseBoolean(arr[4]);
+                    String saveDifficulty = arr[5];
+                    String[][] gameField = new String[saveSize][saveSize];
+                    int xCounter = 0, yCounter = 0;
+                    for (int i = 6; i < arr.length; i++) {
+                        if (arr[i].equals("null")) {
+                            gameField[yCounter][xCounter] = null;
+                        } else {
+                            gameField[yCounter][xCounter] = arr[i].equals("X") ? "X" : "O";
+                        }
+                        xCounter++;
+                        if (xCounter == saveSize) {
+                            yCounter++;
+                            xCounter = 0;
+                        }
                     }
-                    xCounter++;
-                    if(xCounter == saveSize) {
-                        yCounter++;
-                        xCounter = 0;
-                    }
+                    Main.mainPanel.createNewGamePanel(saveSize, saveWinningResult, saveVersusAI, saveDifficulty, gameField, oldPlayerSymbol);
                 }
-                Main.mainPanel.createNewGamePanel(saveSize, saveWinningResult, saveVersusAI, saveDifficulty, gameField, oldPlayerSymbol);
             }
         });
         this.add(loadGameButton);

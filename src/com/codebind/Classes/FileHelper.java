@@ -12,9 +12,9 @@ public class FileHelper {
     /**
      * Функция сохраняет игру в файл
      */
-    public static void saveGameToFile(String gameString) {
+    public static void saveGameToFile(String gameString, String fileName) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("save.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
             writer.write(gameString);
             writer.close();
         } catch (Exception e) {
@@ -25,10 +25,10 @@ public class FileHelper {
      * Функция возвращает игру из файла преобразованную в строку
      * @return возвращает игру из файла преобразованную в строку
      */
-    public static String loadGameFromFile() {
+    public static String loadGameFromFile(String fileName) {
         String data = new String();
         try {
-            File myObj = new File("save.txt");
+            File myObj = new File(fileName);
             Scanner myReader = new Scanner(myObj);
             data = myReader.next();
             myReader.close();
