@@ -110,7 +110,7 @@ public class TopBarPanel extends JPanel {
     public void createWinnerResultPanel() {
         JPanel panel1 = new JPanel();
         winnerResult = new JTextField(size, 5);
-        panel1.add(new JLabel("Количество выгрыщних элементов:"));
+        panel1.add(new JLabel("Количество выигрышных элементов:"));
         panel1.add(winnerResult);
         this.add(panel1);
     }
