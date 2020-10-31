@@ -82,7 +82,7 @@ public class TopBarPanel extends JPanel {
                     String[][] gameField = new String[saveSize][saveSize];
                     int xCounter = 0, yCounter = 0;
                     for (int i = 6; i < arr.length; i++) {
-                        if (arr[i].equals("null")) {
+                        if (arr[i].equals("null") || arr[i].equals("")) {
                             gameField[yCounter][xCounter] = null;
                         } else {
                             gameField[yCounter][xCounter] = arr[i].equals("X") ? "X" : "O";
