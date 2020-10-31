@@ -39,7 +39,7 @@ public class GamePanel extends JPanel {
             b.setFont(new Font("Arial", Font.PLAIN, 50));
 
             if(oldGameField != null ) {
-                if(oldGameField.length > xCounter && oldGameField[0].length > yCounter && oldGameField[xCounter][yCounter] != null){
+                if(oldGameField.length > xCounter && oldGameField[0].length > yCounter && oldGameField[xCounter][yCounter] != null && !oldGameField[xCounter][yCounter].equals("")){
                     setButtonIcon(b, oldGameField[xCounter][yCounter]);
                 }
             }
@@ -52,14 +52,16 @@ public class GamePanel extends JPanel {
             }
             b.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (game.isGameOn() && b.getIcon() == null) {
-                        makeMove(b);
-                    }
-                    if(game.isVersusAI() && game.isGameOn()) {
-                        String name = game.makeAIMove();
-                        var buttons = b.getParent().getComponents();
-                        for(int i = 0; i < buttons.length; i++) {
-                            if(buttons[i].getName().equals(name)) makeMove((JButton) buttons[i]);
+                    if (b.getIcon() == null) {
+                        if (game.isGameOn()) {
+                            makeMove(b);
+                        }
+                        if (game.isVersusAI() && game.isGameOn()) {
+                            String name = game.makeAIMove();
+                            var buttons = b.getParent().getComponents();
+                            for (int i = 0; i < buttons.length; i++) {
+                                if (buttons[i].getName().equals(name)) makeMove((JButton) buttons[i]);
+                            }
                         }
                     }
                 }
