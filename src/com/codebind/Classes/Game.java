@@ -214,7 +214,7 @@ public class Game {
      * @return возвращает преобразованный в строку экземплр класса
      */
     public String toString(){
-        String result = gameField.length + "|" + playerSymbol + "|" + winningResult + "|" + versusAI + "|";
+        String result = Main.mainPanel.topBarPanel.endlessFieldCheckBox.isSelected() + "|" + gameField.length + "|" + playerSymbol + "|" + winningResult + "|" + versusAI + "|";
         if(versusAI) {
             result += ai.getDifficulty();
         }

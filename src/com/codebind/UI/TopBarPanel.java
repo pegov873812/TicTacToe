@@ -60,14 +60,16 @@ public class TopBarPanel extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 String saveResult = FileHelper.loadGameFromFile();
                 var arr = saveResult.split("\\|");
-                int saveSize = Integer.parseInt(arr[0]);
-                int saveWinningResult = Integer.parseInt(arr[2]);
-                String oldPlayerSymbol = arr[1].equals("X") ? "X" : "O";
-                boolean saveVersusAI = Boolean.parseBoolean(arr[3]);
-                String saveDifficulty = arr[4];
+                boolean endlessGame = Boolean.parseBoolean(arr[0]);
+                Main.mainPanel.topBarPanel.endlessFieldCheckBox.setSelected(endlessGame);
+                int saveSize = Integer.parseInt(arr[1]);
+                int saveWinningResult = Integer.parseInt(arr[3]);
+                String oldPlayerSymbol = arr[2].equals("X") ? "X" : "O";
+                boolean saveVersusAI = Boolean.parseBoolean(arr[4]);
+                String saveDifficulty = arr[5];
                 String[][] gameField = new String[saveSize][saveSize];
                 int xCounter = 0, yCounter = 0;
-                for (int i = 5; i < arr.length; i++) {
+                for (int i = 6; i < arr.length; i++) {
                     if(arr[i].equals("null")) {
                         gameField[yCounter][xCounter] = null;
                     }else {
